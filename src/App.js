@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
 import './App.css';
 import Map from './Map';
+import Sidebar from './Sidebar';
 
 class App extends Component {
   render() {
     return (
-      //<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
-      <div className="App">
-        <Map/>
-      </div>
+        <div className="App">
+          <Sidebar/>
+          <Map/>
+        </div>
     );
   }
 }
