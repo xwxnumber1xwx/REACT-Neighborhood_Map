@@ -76,6 +76,11 @@
   display: none;
 }
 
+
+.close #find-hospital {
+  display: none;
+}
+
 .close .hamburger-icon {
   margin-left: 0;
 }

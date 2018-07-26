@@ -52,7 +52,6 @@ class Map extends Component {
     }
     //initialization Google Maps
     initMap = () => {
-
         // create new map
         let map = new google.maps.Map(document.getElementById('map'), {
             center: pos,
@@ -87,15 +86,33 @@ class Map extends Component {
                 if (status === google.maps.places.PlacesServiceStatus.OK) {
                     console.log('results.length')
                     console.log(results.length)
-
+                    console.log(results)
                     //create new Marker
                     for (var i = 0; i < results.length; i++) {
                         console.log('createMarker')
-                        markers.push(new google.maps.Marker({
+                        let marker = new google.maps.Marker({
                             position: results[i].geometry.location,
                             animation: google.maps.Animation.DROP,
                             map: map,
-                        }))
+                        })
+                        console.log('marker')
+                        console.log(marker)
+
+                        // Add information on the marker
+                        let infowindow = new google.maps.InfoWindow;
+                        infowindow.setContent(results[i].name);
+                        marker.infowindow = infowindow
+                        // open information when mouse is over
+                        marker.addListener('mouseover', function () {
+                            infowindow.open(map, marker)
+                        })
+                        //close information when mouse in out
+                        marker.addListener('mouseout', function () {
+                            this.infowindow.close()
+                        })
+                        console.log('results.name')
+                        console.log(results[i].name)
+                        markers.push(marker)
                     }
                 } else {
                     console.log('Error service Status')
@@ -104,24 +121,6 @@ class Map extends Component {
             });
         })
         findHospital.click();
-    }
-    callback = (results, status) => {
-        console.log('this callback 2:')
-        console.log(this)
-        if (status === google.maps.places.PlacesServiceStatus.OK) {
-            for (var i = 0; i < results.length; i++) {
-                this.createMarker(results[i]);
-            }
-        }
-    };
-    //add new marker
-    createMarker = (place) => {
-        let newMarker = new google.maps.Marker({
-            position: place.geometry.location,
-            animation: google.maps.Animation.DROP,
-            map: map,
-        })
-        this.setState((state) => ({ makers: state.markers.concat(newMarker) }))
     }
 
     render() {

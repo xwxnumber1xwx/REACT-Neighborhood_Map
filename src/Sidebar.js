@@ -9,6 +9,7 @@ class Sidebar extends Component {
     }
 
     render() {
+        const { places } = this.props
         return (
             <div className='sidebar'>
                 <div onClick={this.openCloseSideBar} className='hamburger-icon'></div>
@@ -16,6 +17,7 @@ class Sidebar extends Component {
                 <input className='places-search' type='text' placeholder='Ex: Pizzeria in Rome' />
                 <input id="go-places" type="button" value="Go" />
                 <input id='find-hospital' type='button' value='Find Hospital'/>
+                <ol id='places-list'/>
             </div>
         )
     }
