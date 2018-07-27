@@ -59,6 +59,32 @@
 
 }
 
+.sidebar .button {
+  background: black;
+  color: white;
+  border: 0;
+  margin: 10px;
+  text-align: left;
+  width: 90%
+}
+
+ul {
+  padding: 0;
+}
+
+li {
+  list-style-type: none;
+}
+
+.button:hover {
+  color: aqua;
+  font-size: 15px;
+}
+
+#places-list {
+  color: white;
+}
+
 .close {
   width: 3vw;
   min-width: 50px;
@@ -68,14 +94,9 @@
   display: none;
 }
 
-.close .places-search {
+.close .places-filter {
   display: none;
 }
-
-.close #go-places {
-  display: none;
-}
-
 
 .close #find-hospital {
   display: none;
@@ -83,6 +104,10 @@
 
 .close .hamburger-icon {
   margin-left: 0;
+}
+
+.close #places-list {
+  display: none;
 }
 
 .text {
