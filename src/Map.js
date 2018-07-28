@@ -3,12 +3,12 @@ import React, { Component } from 'react'
 //import $ from 'jquery'
 
 //initial position
-const GERMANY = {
+const MANNHEIM = {
     lat: 49.487433,
     lng: 8.467411
 }
 
-let pos = GERMANY
+let pos = MANNHEIM
 let newMap
 let newPlaces = []
 let newMarkers = []
@@ -16,25 +16,9 @@ let newInfowindows = []
 
 class Map extends Component {
 
-    // get user's location
-    getGeoLocation = () => {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(function (position) {
-                pos = {
-                    lat: position.coords.latitude,
-                    lng: position.coords.longitude
-                }
-            })
-        }
-
-    }
-
     componentDidMount() {
-        this.getGeoLocation()
         window.initMap = this.initMap
         this.loadJS('https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyB-q-3KW1wmnFce3L499git68ojKRQ5qhs&v=3&callback=initMap')
-        //console.log('this componentDidMount:'),
-        //console.log(this)
     }
 
     // code took from https://www.klaasnotfound.com/2016/11/06/making-google-maps-work-with-react/
@@ -56,31 +40,23 @@ class Map extends Component {
         })
 
         // Get Places
-        //console.log('this initMap:')
-        //console.log(this)
         const thisMap = this
         //button Find Hospitals
         const findHospital = document.getElementById('find-hospital');
         findHospital.addEventListener('click', function () {
-            //clear old research
+            //clear old search
             for (let item of thisMap.props.markers) {
                 item.setMap(null)
-                //console.log(item + ' deleted')
             }
             //clear markers list
             newMarkers = []
             thisMap.props.updateMarkers(newMarkers)
-            console.log('CLEARED MARKERS')
-            console.log(thisMap.props.markers)
             //clear places
             newPlaces = []
             thisMap.props.updatePlaces(newPlaces)
             //clear infowindows
             newInfowindows = []
             thisMap.props.updateInfowindows(newInfowindows)
-            //console.log(thisMap.props)
-            //console.log('thisMap.props')
-            //console.log('find-hospital')
             let bounds = newMap.getBounds()
             let service = new google.maps.places.PlacesService(newMap);
             service.nearbySearch({
@@ -96,8 +72,6 @@ class Map extends Component {
 
     }
     callback = (results, status) => {
-        //console.log('this callback:')
-        //console.log(this)
         console.log('status: ' + status)
         if (status === google.maps.places.PlacesServiceStatus.OK) {
             for (var i = 0; i < results.length && i < 10; i++) {
@@ -108,12 +82,12 @@ class Map extends Component {
             this.props.updateMarkers(newMarkers)
             this.props.updateInfowindows(newInfowindows)
         }
-        //console.log('MARKERS')
-        //console.log(this.props.markers)
     };
+
     //add new marker
     createMarker = (place) => {
         let marker = new google.maps.Marker({
+            name: place.name,
             position: place.geometry.location,
             animation: google.maps.Animation.DROP,
             map: newMap,
@@ -145,8 +119,6 @@ class Map extends Component {
         marker.addListener('mouseout', function () {
             this.infowindow.close()
         })
-        //console.log('place.name')
-        //console.log(place.name)
         //add element to newInfowindows array
         newInfowindows.push(infowindow)
         return marker
@@ -154,7 +126,7 @@ class Map extends Component {
 
     render() {
         return (
-            <div id='map'></div>
+            <div id='map' tabIndex='-1' role="Maps Application" aria-describedby="map view applications" aria-hidden="true"></div>
         )
     }
 }

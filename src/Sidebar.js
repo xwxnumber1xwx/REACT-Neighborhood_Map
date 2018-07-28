@@ -1,3 +1,4 @@
+/*global google*/
 import React, { Component } from 'react';
 import $ from 'jquery'
 
@@ -9,12 +10,22 @@ class Sidebar extends Component {
         $('.sidebar').toggleClass('close')
     }
 
+    // show selected item on the map
     showMarker = (event) => {
         this.props.markers.filter(marker => {
             if (marker.id === event.target.value) {
                 this.props.infowindows.filter(infowindow => {
                     if (infowindow.id === marker.id) {
+                        //set animation for selected marker
+                        if (marker.getAnimation() !== null) {
+                            marker.setAnimation(null)
+                        } else {
+                            marker.setAnimation(google.maps.Animation.BOUNCE)
+                            setTimeout(marker.setAnimation(null), 300)
+                        }
+                        // show info
                         infowindow.open(this.props.map, marker)
+                    } else {
                     }
                 })
             }
@@ -24,13 +35,13 @@ class Sidebar extends Component {
     render() {
         const { filteredPlace } = this.props
         return (
-            <div className='sidebar'>
-                <div onClick={this.openCloseSideBar} className='hamburger-icon'></div>
-                <p className="text">Filter places</p>
-               <input className='places-filter' type='text'
-                onChange={(event) => {this.props.updateFilter(event.target.value)}} placeholder='Ex: Universitätsklinik'/>
-                <input id='find-hospital' type='button' value='Find Hospital' />
-                <ul id='places-list'>
+            <nav className='sidebar'>
+                <div role='button' aria-label='open/close slide-bar' onClick={this.openCloseSideBar} className='hamburger-icon' tabIndex='0'></div>
+                <h2 className="text">Filter places</h2>
+                <input aria-label='filter showed Hospital' className='places-filter' type='text'
+                    onChange={(event) => { this.props.updateFilter(event.target.value) }} placeholder='Ex: Universitätsklinik' />
+                <input id='find-hospital' aria-label='search hospital in this part of map' role='button' type='button' value='Find Hospitals here' />
+                <ul id='places-list' aria-label='list of Hospitals'>
                     {
                         filteredPlace && (
                             filteredPlace.map((place) => (
@@ -41,7 +52,7 @@ class Sidebar extends Component {
                             ))
                         )}
                 </ul>
-            </div>
+            </nav>
         )
     }
 }
