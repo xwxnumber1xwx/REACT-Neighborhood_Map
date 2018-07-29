@@ -1,21 +1,26 @@
 /*global google*/
 import React, { Component } from 'react'
-//import $ from 'jquery'
+import * as FourSquareAPI from './API/FourSquare'
+import $ from 'jquery'
 
 //initial position
-const MANNHEIM = {
-    lat: 49.487433,
-    lng: 8.467411
+const WASHINGTON = {
+    lat: 38.903029,
+    lng: -77.033071
 }
-
-let pos = MANNHEIM
+const CALLS_LIMIT = 5
+let pos = WASHINGTON
 let newMap
 let newPlaces = []
 let newMarkers = []
 let newInfowindows = []
+let infowindow
+const type = 'restaurant'
 
 class Map extends Component {
-
+    state = {
+        fourSquareContent: ''
+    }
     componentDidMount() {
         window.initMap = this.initMap
         this.loadJS('https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyB-q-3KW1wmnFce3L499git68ojKRQ5qhs&v=3&callback=initMap')
@@ -41,9 +46,9 @@ class Map extends Component {
 
         // Get Places
         const thisMap = this
-        //button Find Hospitals
-        const findHospital = document.getElementById('find-hospital');
-        findHospital.addEventListener('click', function () {
+        //button FIND HERE
+        const findHere = document.getElementById('find-here');
+        findHere.addEventListener('click', function () {
             //clear old search
             for (let item of thisMap.props.markers) {
                 item.setMap(null)
@@ -62,19 +67,19 @@ class Map extends Component {
             service.nearbySearch({
                 location: pos,
                 radius: 5000,
-                type: ['hospital'],
+                type: type,
                 bounds: bounds
             }, thisMap.callback);
             thisMap.props.updatePlaces(newPlaces)
         })
-        findHospital.click();
+        findHere.click();
         this.props.updateMap(newMap)
 
     }
     callback = (results, status) => {
         console.log('status: ' + status)
         if (status === google.maps.places.PlacesServiceStatus.OK) {
-            for (var i = 0; i < results.length && i < 10; i++) {
+            for (var i = 0; i < results.length && i < CALLS_LIMIT; i++) {
                 this.createMarker(results[i]);
             }
             //update places
@@ -85,6 +90,7 @@ class Map extends Component {
     };
 
     //add new marker
+
     createMarker = (place) => {
         let marker = new google.maps.Marker({
             name: place.name,
@@ -94,30 +100,73 @@ class Map extends Component {
             id: place.id
         })
         //this.setState((state) => ({ makers: state.markers.concat(newMarker) }))
-        marker = this.addInfowindow(marker, place)
+        let lat = marker.getPosition().lat()
+        let lng = marker.getPosition().lng()
+        // get some information from FourSwuare
+        this.fourSquare(lat, lng, place.name, marker, place)
         // add place to places
         newPlaces.push(place)
         newMarkers.push(marker)
+    }
+    // get place information from fourSquare
+    fourSquare = (lat, lng, name, marker, place) => {
+        return FourSquareAPI.getFourSquareInfo(lat, lng, name).then(result => {
+            if (result === 'err') {
+                this.setState({ fourSquareContent: 'No Information' })
+            } else {
+                console.log('RESULTTTT')
+                console.log(result.response.venue)
+                let categories = 'no category'
+                let image = 'no image'
+                let rating = 'no rating'
+                if ('categories' in result.response.venue)
+                    categories = result.response.venue.categories[0].name
+                if ('bestPhoto' in result.response.venue)
+                    image = result.response.venue.bestPhoto.prefix + 120 + result.response.venue.bestPhoto.suffix
+                if ('rating' in result.response.venue)
+                    rating = result.response.venue.rating
 
-
+                this.setState({
+                    fourSquareContent: `
+                        <section>
+                                <h3 class='info-content' tabindex=0>${place.name}</h3>
+                                <h4 tabindex=0><p>Restaurant Category :</h4>
+                                <p tabindex=0>${categories}</p>
+                                <img src='${image}' alt='an image of ${place.name}' tabindex=0>
+                                <p tabindex=0>Rating: ${rating}</p>
+                        </section>`
+                })
+            }
+            //Add information to the Marker
+            marker = this.addInfowindow(marker, place)
+        })
     }
 
     //Add Info
     addInfowindow = (marker, place) => {
-        let infowindow = new google.maps.InfoWindow({
-            content: place.name,
-            id: place.id
+        //Add fourSquare Information
+        infowindow = new google.maps.InfoWindow({
+            content: this.state.fourSquareContent,
+            id: place.id,
         });
+
+        //set focus on infowindow (Accessibility)
+        infowindow.addListener('domready', function () {
+            $('.info-content').focus()
+        })
+
         marker.infowindow = infowindow
 
         // open information when mouse is over
         marker.addListener('mouseover', function () {
             infowindow.open(newMap, marker)
+            $('.sidebar').addClass('close')
         })
 
         //close information when mouse in out
         marker.addListener('mouseout', function () {
-            this.infowindow.close()
+            infowindow.close()
+            $('.sidebar').removeClass('close')
         })
         //add element to newInfowindows array
         newInfowindows.push(infowindow)
@@ -126,7 +175,7 @@ class Map extends Component {
 
     render() {
         return (
-            <div id='map' tabIndex='-1' role="Maps Application" aria-describedby="map view applications" aria-hidden="true"></div>
+            <div id='map' tabIndex='-1' aria-describedby="map view applications" aria-hidden="true"></div>
         )
     }
 }

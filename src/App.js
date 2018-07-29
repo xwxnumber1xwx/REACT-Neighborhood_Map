@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
-import Map from './Map';
-import Sidebar from './Sidebar';
+import Map from './component/Map';
+import Sidebar from './component/Sidebar';
 
 
 class App extends Component {
@@ -10,8 +10,8 @@ class App extends Component {
     places: [],
     markers: [],
     infowindows: [],
-    map: '',
-    filteredPlace: []
+    filteredPlace: [],
+    map: ''
   }
 
   //place update
@@ -49,7 +49,7 @@ class App extends Component {
         marker.setVisible(false)
       });
       // set only searched marker to visible
-      markersResult.forEach(function(marker) {
+      markersResult.forEach(function (marker) {
         marker.setVisible(true)
       })
       this.setState({
@@ -70,6 +70,7 @@ class App extends Component {
     const { map, places, markers, infowindows, filteredPlace } = this.state
     return (
       <div className="App">
+
         <Sidebar map={map} infowindows={infowindows} markers={markers} places={places}
           filteredPlace={filteredPlace} updateFilter={this.updateFilter} />
         <Map map={map} infowindows={infowindows} markers={markers} places={places}
