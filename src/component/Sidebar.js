@@ -40,7 +40,6 @@ class Sidebar extends Component {
                 <div role='button' aria-label='open/close slide-bar' onKeyPress={this.openCloseSideBar} onClick={this.openCloseSideBar} className='hamburger-icon' tabIndex='0'></div>
                 <span className="text">Best Restaurants</span>
                 <input id='find-here' aria-label='search in this part of map' role='button' type='button' value='Find restaurants here' />
-                <p>
                     <input aria-label='filter show' className='places-filter' type='text'
                         onChange={(event) => { this.props.updateFilter(event.target.value) }} placeholder='Filter' />
                     <ul id='places-list' aria-label='list places'>
@@ -54,7 +53,6 @@ class Sidebar extends Component {
                                 ))
                             )}
                     </ul>
-                </p>
             </nav>
         )
     }
