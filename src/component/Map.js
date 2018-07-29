@@ -114,8 +114,6 @@ class Map extends Component {
             if (result === 'err') {
                 this.setState({ fourSquareContent: 'No Information' })
             } else {
-                console.log('RESULTTTT')
-                console.log(result.response.venue)
                 let categories = 'no category'
                 let image = 'no image'
                 let rating = 'no rating'
