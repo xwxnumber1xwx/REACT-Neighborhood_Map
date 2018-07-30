@@ -69,14 +69,14 @@ class App extends Component {
   render() {
     const { map, places, markers, infowindows, filteredPlace } = this.state
     return (
-      <div className="App">
+      <main className="App">
 
         <Sidebar map={map} infowindows={infowindows} markers={markers} places={places}
           filteredPlace={filteredPlace} updateFilter={this.updateFilter} />
         <Map map={map} infowindows={infowindows} markers={markers} places={places}
           updateMap={this.updateMap} updateInfowindows={this.updateInfowindows} updateMarkers={this.updateMarkers} updatePlaces={this.updatePlaces}
         />
-      </div>
+      </main>
     );
   }
 }

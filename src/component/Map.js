@@ -34,6 +34,10 @@ class Map extends Component {
         var script = window.document.createElement("script");
         script.src = src;
         script.async = true;
+        // error handling
+        script.onerror = () => {
+            document.getElementById('map').innerText = `Sorry, something went wrong with loading Google Maps:`
+          };
         ref.parentNode.insertBefore(script, ref);
     }
     //initialization Google Maps
@@ -43,7 +47,6 @@ class Map extends Component {
             center: pos,
             zoom: 13,
         })
-
         // Get Places
         const thisMap = this
         //button FIND HERE
@@ -77,7 +80,6 @@ class Map extends Component {
 
     }
     callback = (results, status) => {
-        console.log('status: ' + status)
         if (status === google.maps.places.PlacesServiceStatus.OK) {
             for (var i = 0; i < results.length && i < CALLS_LIMIT; i++) {
                 this.createMarker(results[i]);
@@ -86,6 +88,11 @@ class Map extends Component {
             this.props.updatePlaces(newPlaces)
             this.props.updateMarkers(newMarkers)
             this.props.updateInfowindows(newInfowindows)
+        } else if (status === 'ZERO_RESULTS') {
+            alert('No Restaurant in this area')
+        } else {
+            alert(`Sorry, something went wrong with Google Maps Places:
+            Status: ${status}`);
         }
     };
 
@@ -111,8 +118,14 @@ class Map extends Component {
     // get place information from fourSquare
     fourSquare = (lat, lng, name, marker, place) => {
         return FourSquareAPI.getFourSquareInfo(lat, lng, name).then(result => {
-            if (result === 'err') {
-                this.setState({ fourSquareContent: 'No Information' })
+            if (result.meta.code !== 200 || result === 'err') {
+                this.setState({ fourSquareContent:
+                        `<section>
+                            <p>Sorry, something went wrong</p>
+                            <p>ERROR: ${result.meta.code}</p>
+                            <p>${result.meta.errorDetail}</p>
+                        </section>`
+                    })
             } else {
                 let categories = 'no category'
                 let image = 'no image'
@@ -166,6 +179,8 @@ class Map extends Component {
             infowindow.close()
             $('.sidebar').removeClass('close')
         })
+
+
         //add element to newInfowindows array
         newInfowindows.push(infowindow)
         return marker
