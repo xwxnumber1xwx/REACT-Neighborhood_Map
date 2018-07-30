@@ -36,7 +36,7 @@ $ npm start
 	`python -m SimpleHTTPServer 8000`
 * Then the App should run on [port 8000](http://localhost:8000).
 
-* It' important to known, the Service Worker (offline-first functionality) works only if you build the app (Production mode). For this reason if you want to test it, you need to build first the Web App
+* It's important to known, the Service Worker (offline-first functionality) works only if you build the app (Production mode). For this reason if you want to test it, you need to build first the Web App
 
 ## MIT License
 
