@@ -170,13 +170,13 @@ class Map extends Component {
 
         // open information when mouse is over
         marker.addListener('mouseover', function () {
-            infowindow.open(newMap, marker)
+            marker.infowindow.open(newMap, marker)
             $('.sidebar').addClass('close')
         })
 
         //close information when mouse in out
         marker.addListener('mouseout', function () {
-            infowindow.close()
+            marker.infowindow.close()
             $('.sidebar').removeClass('close')
         })
 
