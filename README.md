@@ -2,15 +2,15 @@
 
 ## Table of Contents
 
+* [Overview](##overview)
 * [Installation](##Installation)
 * [How Run the Web App](##how-run-the-web-app)
 * [How Build the Web App](##how-build-the-web-app)
-* [How to use](##how-to-use)
 * [MIT License](#mit-license)
 
-## Overview:
-This is a Just single Web Application builded with REACT, GOOGLE MAPS API and FOURSQUARE API. This App list 5 restaurant in Washington but you can search other restaurant on the maps. you can read some some information about it just clicking on the name of the restaurant. You can also filter the list to find quickly one restaurant.
-This project is a project for Udacity's front-end web developer Nanodegree to emphasize my experience in web development.
+## Overview
+This is a Just single Web Application builded with REACT, GOOGLE MAPS API and FOURSQUARE API. This App list 5 restaurant in Washington but if you want, you can search other restaurant on the maps, just choose a location on the map and click "Find restaurants here" button. You can read some some information about it just clicking on the name of the restaurant. You can also filter the list to find quickly one restaurant.
+This project is a project for Udacity's front-end web developer Nano-degree to emphasize my experience in web development.
 
 ## Installation
 
@@ -26,7 +26,7 @@ $ npm install
 $ npm start
 ```
 
-## How Build the Web App:
+## How Build the Web App
 * To build the App:
 
 	`npm run build`
@@ -35,6 +35,8 @@ $ npm start
 
 	`python -m SimpleHTTPServer 8000`
 * Then the App should run on [port 8000](http://localhost:8000).
+
+* It' important to known, the Service Worker (offline-first functionality) works only if you build the app (Production mode). For this reason if you want to test it, you need to build first the Web App
 
 ## MIT License
 
