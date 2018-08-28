@@ -2,6 +2,7 @@
 import React, { Component } from 'react'
 import * as FourSquareAPI from './API/FourSquare'
 import $ from 'jquery'
+import PropTypes from 'prop-types'
 
 //initial position
 const WASHINGTON = {
@@ -23,7 +24,7 @@ class Map extends Component {
     }
     componentDidMount() {
         window.initMap = this.initMap
-        this.loadJS('https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyB-q-3KW1wmnFce3L499git68ojKRQ5qhs&v=3&callback=initMap')
+        this.loadJS('https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyDQLFI1huz_P6aOlOqP5pJnloVBwLjSUn8&v=3&callback=initMap')
     }
 
     // code took from https://www.klaasnotfound.com/2016/11/06/making-google-maps-work-with-react/
@@ -193,6 +194,16 @@ class Map extends Component {
     }
 }
 
-
+//Check if the Type of variables are correct
+Map.propTypes = {
+    map: PropTypes.object.isRequired,
+    infowindows: PropTypes.array.isRequired,
+    markers: PropTypes.array.isRequired,
+    places: PropTypes.array.isRequired,
+    updateMap: PropTypes.func.isRequired,
+    updateInfowindows: PropTypes.func.isRequired,
+    updateMarkers: PropTypes.func.isRequired,
+    updatePlaces: PropTypes.func.isRequired
+}
 
 export default Map;

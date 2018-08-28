@@ -1,6 +1,7 @@
 /*global google*/
 import React, { Component } from 'react';
 import $ from 'jquery'
+import PropTypes from 'prop-types'
 
 
 class Sidebar extends Component {
@@ -56,5 +57,15 @@ class Sidebar extends Component {
             </nav>
         )
     }
+}
+
+//Check if the Type of variables are correct
+Sidebar.propTypes = {
+    map: PropTypes.object.isRequired,
+    infowindows: PropTypes.array.isRequired,
+    markers: PropTypes.array.isRequired,
+    places: PropTypes.array.isRequired,
+    filteredPlace: PropTypes.array.isRequired,
+    updateFilter: PropTypes.func.isRequired,
 }
 export default Sidebar
