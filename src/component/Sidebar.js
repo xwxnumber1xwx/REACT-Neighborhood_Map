@@ -8,15 +8,17 @@ class Sidebar extends Component {
 
     //open or close the Sidebar
     openCloseSideBar() {
+        // TODO: improve performance
         $('.sidebar').toggleClass('close')
     }
 
     // show selected item on the map
     showMarker = (event) => {
-        // do something
         this.props.markers.filter((marker) => {
+            // TODO: improve performance
             if (marker.id === event.target.value) {
                 this.props.infowindows.filter(infowindow => {
+                    // TODO: improve performance
                     if (infowindow.id === marker.id) {
                         //set animation for selected marker
                         if (marker.getAnimation() !== null) {
@@ -25,7 +27,7 @@ class Sidebar extends Component {
                             marker.setAnimation(google.maps.Animation.BOUNCE)
                             setTimeout(marker.setAnimation(null), 300)
                         }
-                        // show info
+                        // show infowindow
                         infowindow.open(this.props.map, marker)
                     }
                 })
