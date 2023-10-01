@@ -13,7 +13,7 @@ class Sidebar extends Component {
 
     // show selected item on the map
     showMarker = (event) => {
-        console.log('this.props.markers', this.props.markers)
+        // do something
         this.props.markers.filter((marker) => {
             if (marker.id === event.target.value) {
                 this.props.infowindows.filter(infowindow => {
